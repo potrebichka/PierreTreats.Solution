@@ -1,0 +1,19 @@
+@model PierreSweets.Models.Flavor
+
+<h1>Edit</h1>
+<hr/>
+<h2>Edit this flavor: @Html.DisplayFor(model => model.Description)</h2>
+<hr/>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.FlavorId)
+    @Html.HiddenFor(model => model.Treats)
+
+    <div class="form-group">
+        <h3>@Html.LabelFor(model => model.Description)</h3>
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-success"/>
+}<hr/>
+<h3>@Html.ActionLink("Back to list of flavors", "Index", null, null, new { @class = "tab" } )</h3>

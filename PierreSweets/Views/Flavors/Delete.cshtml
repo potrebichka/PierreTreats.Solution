@@ -1,0 +1,13 @@
+@model PierreSweets.Models.Flavor
+
+<h2>Are you sure you want to delete this flavor?</h2>
+
+<h3>@Html.DisplayNameFor(model => model.Description): @Html.DisplayFor(model => model.Description)</h3>
+@using (Html.BeginForm())
+{
+    <input type="submit" value="Delete" class="btn btn-danger"/>
+}
+
+<hr/>
+<h3>@Html.ActionLink("Back to flavor", "Details", new {id = Model.FlavorId}, new { @class = "tab" } )</h3>
+<h3>@Html.ActionLink("Back to list of flavors", "Index", null, null, new { @class = "tab" } )</h3>

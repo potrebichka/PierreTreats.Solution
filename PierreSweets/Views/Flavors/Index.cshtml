@@ -1,0 +1,29 @@
+@using PierreSweets.Models;
+@model IEnumerable<PierreSweets.Models.Flavor>
+@using System.Security.Claims
+
+<div class="text-center">
+  <h1>Flavors</h1>
+  <hr/>
+  @if (Model.Any())
+  {
+    <ul>
+      @foreach (Flavor flavor in Model)
+      {
+        <li><h3>
+          @Html.ActionLink($"{flavor.Description}", "Details", new { id = flavor.FlavorId }, new {@class = "tab" })
+        </h3></li>
+      }
+    </ul>
+  } 
+  else
+  {
+    <h3>No flavors have been added yet!</h3>
+  }
+  <hr/>
+  @if (User.Identity.IsAuthenticated)
+  {
+    <h3>@Html.ActionLink("Add a new flavor", "Create", null, null, new {@class = "tab" })</h3>
+  }
+  <h3>@Html.ActionLink("Home", "Index", "Home", null, new {@class = "tab" })</h3>
+</div>

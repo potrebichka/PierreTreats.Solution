@@ -95,19 +95,20 @@ namespace PierreSweets.Controllers
       {
         return RedirectToAction("Details", new {id = id});
       }
-      // ViewBag.FlavorId = new SelectList(_db.Flavors.Include(flavor => flavor.Treats), "FlavorId", "Name");
-      ViewBag.FlavorId = new SelectList(_db.TreatFlavor.Where(join => join.TreatId != id).Include(treatflavor => treatflavor.Flavor), "FlavorId", "Name");
+
+      ViewBag.FlavorId = new SelectList(_db.Flavors, "FlavorId", "Description");
       return View(thisTreat);
     }
     [HttpPost]
     public ActionResult AddFlavor(Treat treat, int FlavorId)
     {
-      if (FlavorId != 0)
+      TreatFlavor join = _db.TreatFlavor.FirstOrDefault(treatflavor => treatflavor.TreatId == treat.TreatId && treatflavor.FlavorId == FlavorId);
+      if (FlavorId != 0 && join == null)
       {
           _db.TreatFlavor.Add(new TreatFlavor() {FlavorId = FlavorId, TreatId = treat.TreatId});
       }
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new {id = treat.TreatId});
     }
     [Authorize]
     public async Task<ActionResult> Delete(int id)
@@ -136,7 +137,7 @@ namespace PierreSweets.Controllers
       var joinEntry = _db.TreatFlavor.FirstOrDefault(entry => entry.TreatFlavorId == joinId);
       _db.TreatFlavor.Remove(joinEntry);
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new {id = joinEntry.TreatId});
     }
   }
 }
