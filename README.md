@@ -42,20 +42,9 @@ dotnet run
 
 ## Specifications:
 
-**** The application should have user authentication. A user should be able to log in and log out. Only logged in users should have create, update and delete functionality. All users should be able to have read functionality.
-**** There should be a many-to-many relationship between Treats and Flavors. A treat can have many flavors (such as sweet, savory, spicy, or creamy) and a flavor can have many treats. For instance, the "sweet" flavor could include chocolate croissants, cheesecake, and so on.
-**** A user should be able to navigate to a splash page that lists all treats and flavors. Users should be able to click on an individual treat or flavor to see all the treats/flavors that belong to it.
-**** Does at least one of your classes have all CRUD methods implemented in your app?
-**** Are you able to view both sides of the many-many relationship? For a particular instance of a class, are you able to view all of the instances of the other class that are related to it?
-**** Are users able to register, log in and log out with Identity?
-**** Is Create, Update and Delete functionality limited to authenticated users?
-**** Is the project in a polished, portfolio-quality state?
-**** Was required functionality in place by the 5:00pm Friday deadline?
-**** Does the project demonstrate all of this week's concepts? If prompted, are you able to discuss your code with an instructor using correct terminology?
-**** Have separate roles for admins and logged-in users. Only admins should be able to add, update and delete.
-**** Add an order form that only logged-in users can access. A logged-in user should be able to create, read, update and delete their own order.
-
-
+* The application have user authentication. A user is be able to log in and log out. Only logged in users have create, update and delete functionality. All users have read functionality. Logged in users are able to upadte and delete only treats and flavors added by them.
+* There is a many-to-many relationship between Treats and Flavors. A treat can have many flavors (such as sweet, savory, spicy, or creamy) and a flavor can have many treats. For instance, the "sweet" flavor could include chocolate croissants, cheesecake, and so on.
+* A user is be able to navigate to a splash page that lists all treats and flavors. Users is be able to click on an individual treat or flavor to see all the treats/flavors that belong to it.
 
 ## Technologies Used
 
