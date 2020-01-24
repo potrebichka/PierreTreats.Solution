@@ -30,6 +30,7 @@ namespace PierreSweets
             .UseMySql(Configuration["ConnectionStrings:DefaultConnection"]));
 
         services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<PierreSweetsContext>()
             .AddDefaultTokenProviders();
 
@@ -59,10 +60,10 @@ namespace PierreSweets
             template: "{controller=Home}/{action=Index}/{id?}");
         });
 
-            app.Run(async (context) =>
-            {
-            await context.Response.WriteAsync("Something went wrong!");
-            });
+        app.Run(async (context) =>
+        {
+        await context.Response.WriteAsync("Something went wrong!");
+        });
         }
     }
 }

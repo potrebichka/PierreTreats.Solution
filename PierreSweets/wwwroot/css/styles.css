@@ -88,3 +88,11 @@ body {
   font-weight: 500;
   font-size: 50px;
 }
+
+a.tab {
+  color: #470443;
+}
+
+.multi-line{
+  height: 5em;
+}

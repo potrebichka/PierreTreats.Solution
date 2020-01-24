@@ -5,9 +5,9 @@ namespace PierreSweets.Models
 {
     public class PierreSweetsContext : IdentityDbContext<ApplicationUser>
     {
-        // public virtual DbSet<Category> Categories {get;set;}
-        // public DbSet<Item> Items {get;set;}
-        // public DbSet<CategoryItem> CategoryItem { get; set; }
+        public virtual DbSet<Treat> Treats {get;set;}
+        public DbSet<Flavor> Flavors {get;set;}
+        public DbSet<TreatFlavor> TreatFlavor { get; set; }
         public PierreSweetsContext(DbContextOptions options) : base(options) {}
     }
 }

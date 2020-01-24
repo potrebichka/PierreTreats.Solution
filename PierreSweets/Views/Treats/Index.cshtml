@@ -1,0 +1,30 @@
+@using PierreSweets.Models;
+@model IEnumerable<PierreSweets.Models.Treat>
+@using System.Security.Claims
+
+<div class="text-center">
+  <h1>Treats</h1>
+  <hr/>
+  @if (Model.Any())
+  {
+    <ul>
+      @foreach (Treat treat in Model)
+      {
+        <li><h3>
+          @Html.ActionLink($"{treat.Name}", "Details", new { id = treat.TreatId }, new {@class = "tab" })
+          $@treat.Price
+        </h3></li>
+      }
+    </ul>
+  } 
+  else
+  {
+    <h3>No treats have been added yet!</h3>
+  }
+  <hr/>
+  @if (User.Identity.IsAuthenticated)
+  {
+    <h3>@Html.ActionLink("Add a new treat", "Create", null, null, new {@class = "tab" })</h3>
+  }
+  <h3>@Html.ActionLink("Home", "Index", "Home", null, new {@class = "tab" })</h3>
+</div>
