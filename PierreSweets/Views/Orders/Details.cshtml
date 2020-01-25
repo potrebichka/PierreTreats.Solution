@@ -1,28 +1,26 @@
-@* @model PierreSweets.Models.Treat
+@model PierreSweets.Models.Order
 @using System.Security.Claims
 
-<h2>Treat Details</h2>
-<hr />
-<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
+<h2>Order Details</h2>
 <hr/>
 <h3>@Html.DisplayNameFor(model => model.Description): @Html.DisplayFor(model => model.Description)</h3>
 <hr/>
 <h3>@Html.DisplayNameFor(model => model.Price): @Html.DisplayFor(model => model.Price)</h3>
 <hr/>
-@if(@Model.Flavors.Count == 0)
+@if(@Model.Treats.Count == 0)
 {
-  <h3>This treat does not belong to any flavors</h3>
+  <h3>No treats in order.</h3>
 }
 else
 {
-  <h4>Flavors the treat belongs to:</h4>
+  <h4>Treats in order:</h4>
   <ul>
-    @foreach(var join in Model.Flavors)
+    @foreach(var join in Model.Treats)
     {
-      <li>@join.Flavor.Description</li>
-      @using (Html.BeginForm("DeleteFlavor", "Treats"))
+      <li>@join.Treat.Name : @join.Treat.Price</li>
+      @using (Html.BeginForm("DeleteTreat", "Orders"))
       {
-        @Html.Hidden("joinId", @join.TreatFlavorId)
+        @Html.Hidden("joinId", @join.OrderTreatId)
         <input type="submit" value="delete" class="btn btn-danger" />
       }
     }
@@ -30,11 +28,12 @@ else
 }
 <hr/>
 
-@if (User.Identity.IsAuthenticated && ViewBag.IsCurrentUser)
+@if (User.Identity.IsAuthenticated)
 {
-  <h3>@Html.ActionLink("Edit Treat", "Edit", new {id = Model.TreatId} , new {@class = "tab" })</h3>
-  <h3>@Html.ActionLink("Delete Treat", "Delete", new {id = Model.TreatId}, new {@class = "tab" })</h3>
-  <h3>@Html.ActionLink("Add a Flavor", "AddFlavor", new { id = Model.TreatId }, new {@class = "tab" })</h3>
+  <h3>@Html.ActionLink("Edit Order", "Edit", new {id = Model.OrderId} , new {@class = "tab" })</h3>
+  <h3>@Html.ActionLink("Delete Order", "Delete", new {id = Model.OrderId}, new {@class = "tab" })</h3>
+  <h3>@Html.ActionLink("Add a Treat to order", "AddTreat", new { id = Model.OrderId }, new {@class = "tab" })</h3>
+  <h3>@Html.ActionLink("Submit order", "Submit", new { id = Model.OrderId }, new {@class = "tab" })</h3>
 }
 
-<h3>@Html.ActionLink("Back to list of treats", "Index", null, null, new {@class = "tab" })</h3> *@
+<h3>@Html.ActionLink("Back to list of orders", "Index", null, null, new {@class = "tab" })</h3>

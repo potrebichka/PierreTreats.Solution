@@ -1,13 +1,29 @@
-@* @model PierreSweets.Models.Treat
+@model PierreSweets.Models.Order
 
-<h2>Are you sure you want to delete this treat?</h2>
+<h2>Are you sure you want to delete this order?</h2>
 
-<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
+<h3>@Html.DisplayNameFor(model => model.Description): @Html.DisplayFor(model => model.Description)</h3>
+<hr/>
+@if(@Model.Treats.Count == 0)
+{
+  <h3>No treats in order.</h3>
+}
+else
+{
+  <h4>Treats in order:</h4>
+  <ul>
+    @foreach(var join in Model.Treats)
+    {
+      <li>@join.Treat.Name : @join.Treat.Price</li>
+    }
+  </ul>
+}
+<hr/>
 @using (Html.BeginForm())
 {
     <input type="submit" value="Delete" class="btn btn-danger"/>
 }
 
 <hr/>
-<h3>@Html.ActionLink("Back to treat", "Details", new {id = Model.TreatId}, new { @class = "tab" } )</h3>
-<h3>@Html.ActionLink("Back to list of treats", "Index", null, null, new { @class = "tab" } )</h3> *@
+<h3>@Html.ActionLink("Back to order", "Details", new {id = Model.OrderId}, new { @class = "tab" } )</h3>
+<h3>@Html.ActionLink("Back to list of orders", "Index", null, null, new { @class = "tab" } )</h3>

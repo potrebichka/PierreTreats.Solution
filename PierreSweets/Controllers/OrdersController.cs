@@ -58,57 +58,61 @@ namespace PierreSweets.Controllers
             return RedirectToAction("Index");
         }
 
-        // public ActionResult Details(int id)
-        // {
-        //   Flavor thisFlavor = _db.Flavors
-        //       .Include(flavor => flavor.User)
-        //       .Include(flavor => flavor.Treats)
-        //       .ThenInclude(join => join.Treat)
-        //       .FirstOrDefault(flavor => flavor.FlavorId == id);
-        //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //   ViewBag.IsCurrentUser = userId == thisFlavor.User.Id;
-        //   return View(thisFlavor);
-        // }
-        // [Authorize]
-        // public async Task<ActionResult> Edit(int id)
-        // {
-        //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //   var currentUser = await _userManager.FindByIdAsync(userId);
-        //   Flavor thisFlavor = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(flavors => flavors.FlavorId == id);
-        //   if (thisFlavor == null)
-        //   {
-        //     return RedirectToAction("Details", new {id = id});
-        //   }
-        //   return View(thisFlavor);
-        // }
-        // [HttpPost]
-        // public ActionResult Edit(Flavor flavor)
-        // {
-        //   _db.Entry(flavor).State = EntityState.Modified;
-        //   _db.SaveChanges();
-        //   return RedirectToAction("Index");
-        // }
-        // [Authorize]
-        // public async Task<ActionResult> Delete(int id)
-        // {
-        //   var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //   var currentUser = await _userManager.FindByIdAsync(userId);
+        public ActionResult Details(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        //   Flavor thisFlavor = _db.Flavors.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(flavors => flavors.FlavorId == id);
-        //   if (thisFlavor == null)
-        //   {
-        //     return RedirectToAction("Details", new {id = id});
-        //   }
-        //   return View(thisFlavor);
-        // }
-        // [HttpPost, ActionName("Delete")]
-        // public ActionResult DeleteConfirmed(int id)
-        // {
-        //   Flavor thisFlavor = _db.Flavors.FirstOrDefault(flavors => flavors.FlavorId == id);
-        //   _db.Flavors.Remove(thisFlavor);
-        //   _db.SaveChanges();
-        //   return RedirectToAction("Index");
-        // }
-        
+            Order thisOrder = _db.Orders
+                .Include(order => order.User)
+                .Include(order => order.Treats)
+                .ThenInclude(join => join.Treat)
+                .FirstOrDefault(order => order.OrderId == id);
+            if (userId != thisOrder.User.Id)
+            {
+                return Redirect("Index");
+            }
+            return View(thisOrder);
+        }
+        [Authorize]
+        public async Task<ActionResult> Edit(int id)
+        {
+          var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          var currentUser = await _userManager.FindByIdAsync(userId);
+
+          Order thisOrder = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(order => order.OrderId == id);
+          if (thisOrder == null)
+          {
+            return RedirectToAction("Details", new {id = id});
+          }
+          return View(thisOrder);
+        }
+        [HttpPost]
+        public ActionResult Edit(Order order)
+        {
+          _db.Entry(order).State = EntityState.Modified;
+          _db.SaveChanges();
+          return RedirectToAction("Details", new {id = order.OrderId});
+        }
+        [Authorize]
+        public async Task<ActionResult> Delete(int id)
+        {
+          var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          var currentUser = await _userManager.FindByIdAsync(userId);
+
+          Order thisOrder = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).Include(order => order.Treats).ThenInclude(join => join.Treat).FirstOrDefault(orders => orders.OrderId == id);
+          if (thisOrder == null)
+          {
+            return RedirectToAction("Details", new {id = id});
+          }
+          return View(thisOrder);
+        }
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+          Order thisOrder = _db.Orders.FirstOrDefault(flavors => flavors.OrderId == id);
+          _db.Orders.Remove(thisOrder);
+          _db.SaveChanges();
+          return RedirectToAction("Index");
+        }  
     }
 }
