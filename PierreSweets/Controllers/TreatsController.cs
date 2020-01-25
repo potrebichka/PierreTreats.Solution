@@ -30,7 +30,7 @@ namespace PierreSweets.Controllers
     }
     public ActionResult Create()
     {
-      ViewBag.FlavorId = new MultiSelectList(_db.Flavors, "FlavorId", "Name");
+      ViewBag.FlavorId = new MultiSelectList(_db.Flavors, "FlavorId", "Description");
       return View();
     }
     [HttpPost]

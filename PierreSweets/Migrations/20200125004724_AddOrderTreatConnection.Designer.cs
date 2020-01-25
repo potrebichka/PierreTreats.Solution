@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PierreSweets.Models;
 
 namespace PierreSweets.Migrations
 {
     [DbContext(typeof(PierreSweetsContext))]
-    partial class PierreSweetsContextModelSnapshot : ModelSnapshot
+    [Migration("20200125004724_AddOrderTreatConnection")]
+    partial class AddOrderTreatConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,11 +237,15 @@ namespace PierreSweets.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("OrderId");
+
                     b.Property<double>("Price");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("TreatId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -326,18 +332,22 @@ namespace PierreSweets.Migrations
             modelBuilder.Entity("PierreSweets.Models.OrderTreat", b =>
                 {
                     b.HasOne("PierreSweets.Models.Order", "Order")
-                        .WithMany("Treats")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PierreSweets.Models.Treat", "Treat")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("TreatId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PierreSweets.Models.Treat", b =>
                 {
+                    b.HasOne("PierreSweets.Models.Order")
+                        .WithMany("Treats")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("PierreSweets.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

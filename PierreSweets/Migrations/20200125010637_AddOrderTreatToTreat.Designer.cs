@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PierreSweets.Models;
 
 namespace PierreSweets.Migrations
 {
     [DbContext(typeof(PierreSweetsContext))]
-    partial class PierreSweetsContextModelSnapshot : ModelSnapshot
+    [Migration("20200125010637_AddOrderTreatToTreat")]
+    partial class AddOrderTreatToTreat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

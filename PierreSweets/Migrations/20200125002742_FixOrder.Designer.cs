@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PierreSweets.Models;
 
 namespace PierreSweets.Migrations
 {
     [DbContext(typeof(PierreSweetsContext))]
-    partial class PierreSweetsContextModelSnapshot : ModelSnapshot
+    [Migration("20200125002742_FixOrder")]
+    partial class FixOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,24 +210,6 @@ namespace PierreSweets.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("PierreSweets.Models.OrderTreat", b =>
-                {
-                    b.Property<int>("OrderTreatId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("TreatId");
-
-                    b.HasKey("OrderTreatId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TreatId");
-
-                    b.ToTable("OrderTreat");
-                });
-
             modelBuilder.Entity("PierreSweets.Models.Treat", b =>
                 {
                     b.Property<int>("TreatId")
@@ -235,11 +219,15 @@ namespace PierreSweets.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("OrderId");
+
                     b.Property<double>("Price");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("TreatId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -323,21 +311,12 @@ namespace PierreSweets.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("PierreSweets.Models.OrderTreat", b =>
-                {
-                    b.HasOne("PierreSweets.Models.Order", "Order")
-                        .WithMany("Treats")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("PierreSweets.Models.Treat", "Treat")
-                        .WithMany("Orders")
-                        .HasForeignKey("TreatId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("PierreSweets.Models.Treat", b =>
                 {
+                    b.HasOne("PierreSweets.Models.Order")
+                        .WithMany("Treats")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("PierreSweets.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

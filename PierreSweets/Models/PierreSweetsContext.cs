@@ -9,6 +9,7 @@ namespace PierreSweets.Models
         public DbSet<Flavor> Flavors {get;set;}
         public DbSet<Order> Orders {get;set;}
         public DbSet<TreatFlavor> TreatFlavor { get; set; }
+        public DbSet<OrderTreat> OrderTreat { get; set; }
         public PierreSweetsContext(DbContextOptions options) : base(options) {}
     }
 }

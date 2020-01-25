@@ -8,6 +8,7 @@ namespace PierreSweets.Models
     public Treat()
     {
       this.Flavors = new HashSet<TreatFlavor>();
+      this.Orders = new HashSet<OrderTreat>();
     }
     public int TreatId { get; set; }
     [Display(Name = "Treat name")]
@@ -17,5 +18,6 @@ namespace PierreSweets.Models
     public double Price { get; set; }
     public virtual ApplicationUser User { get; set; } 
     public ICollection<TreatFlavor> Flavors { get; }
+    public ICollection<OrderTreat> Orders { get; }
   }
 }
