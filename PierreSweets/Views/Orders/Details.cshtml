@@ -7,6 +7,8 @@
 <hr/>
 <h3>@Html.DisplayNameFor(model => model.Price): @Html.DisplayFor(model => model.Price)</h3>
 <hr/>
+<h3>@Html.DisplayNameFor(model => model.IsSubmitted): @Html.DisplayFor(model => model.IsSubmitted)</h3>
+<hr/>
 @if(@Model.Treats.Count == 0)
 {
   <h3>No treats in order.</h3>
@@ -18,22 +20,31 @@ else
     @foreach(var join in Model.Treats)
     {
       <li>@join.Treat.Name : @join.Treat.Price</li>
-      @using (Html.BeginForm("DeleteTreat", "Orders"))
+      @if (!Model.IsSubmitted)
       {
-        @Html.Hidden("joinId", @join.OrderTreatId)
-        <input type="submit" value="delete" class="btn btn-danger" />
+        @using (Html.BeginForm("DeleteTreat", "Orders"))
+        {
+          @Html.Hidden("joinId", @join.OrderTreatId)
+          <input type="submit" value="delete" class="btn btn-danger" />
+        }
       }
+
     }
   </ul>
 }
 <hr/>
 
 @if (User.Identity.IsAuthenticated)
-{
-  <h3>@Html.ActionLink("Edit Order", "Edit", new {id = Model.OrderId} , new {@class = "tab" })</h3>
+{  @if (!Model.IsSubmitted)
+  {
+    <h3>@Html.ActionLink("Edit Order", "Edit", new {id = Model.OrderId} , new {@class = "tab" })</h3>
+    <h3>@Html.ActionLink("Submit order", "Submit", new { id = Model.OrderId }, new {@class = "tab" })</h3>
+    <h3>@Html.ActionLink("Add a Treat to order", "AddTreat", new { id = Model.OrderId }, new {@class = "tab" })</h3>
+  }
+  
   <h3>@Html.ActionLink("Delete Order", "Delete", new {id = Model.OrderId}, new {@class = "tab" })</h3>
-  <h3>@Html.ActionLink("Add a Treat to order", "AddTreat", new { id = Model.OrderId }, new {@class = "tab" })</h3>
-  <h3>@Html.ActionLink("Submit order", "Submit", new { id = Model.OrderId }, new {@class = "tab" })</h3>
+  
+
 }
 
 <h3>@Html.ActionLink("Back to list of orders", "Index", null, null, new {@class = "tab" })</h3>

@@ -1,19 +1,44 @@
 @using PierreSweets.Models;
 @model IEnumerable<PierreSweets.Models.Order>
 @using System.Security.Claims
-
 <div class="text-center">
   <h1>Orders of user @ViewBag.Name</h1>
   <hr/>
   @if (Model.Any())
   {
+    <h2>Current orders</h2>
     <ul>
       @foreach (Order order in Model)
       {
-        <li><h3>
-          @Html.ActionLink($"Order {order.OrderId}", "Details", new { id = order.OrderId }, new {@class = "tab" })
-          $@order.Price
-        </h3></li>
+        if (!order.IsSubmitted)
+        {        
+          <li><h3>
+            @Html.ActionLink($"Order {order.OrderId}", "Details", new { id = order.OrderId }, new {@class = "tab" })
+            $@order.Price
+          </h3></li>
+        }
+      }
+      @if (ViewBag.Flag)
+      {
+        <h3>No current orders</h3>
+      }
+    </ul>
+    <hr/>
+    <h2>Submitted orders</h2>
+    <ul>
+      @foreach (Order order in Model)
+      {
+        if (order.IsSubmitted)
+        {        
+          <li><h3>
+            @Html.ActionLink($"Order {order.OrderId}", "Details", new { id = order.OrderId }, new {@class = "tab" })
+            $@order.Price
+          </h3></li>
+        }
+      }
+      @if (ViewBag.Flag2)
+      {
+        <h3>No submitted orders</h3>
       }
     </ul>
   } 

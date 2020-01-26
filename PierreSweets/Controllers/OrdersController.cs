@@ -29,6 +29,8 @@ namespace PierreSweets.Controllers
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
             List<Order> userOrders = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).ToList();
+            ViewBag.Flag2 = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(order => order.IsSubmitted) == null;
+            ViewBag.Flag = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(order => !order.IsSubmitted) == null;
             ViewBag.Name = currentUser.UserName;
             return View(userOrders);
         }
@@ -43,6 +45,7 @@ namespace PierreSweets.Controllers
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
             order.User = currentUser;
+            order.IsSubmitted = false;
             double price = 0;
             _db.Orders.Add(order);
             if (TreatId.Count != 0)
@@ -150,6 +153,31 @@ namespace PierreSweets.Controllers
             _db.Entry(order).State = EntityState.Modified;
             _db.SaveChanges();
             return RedirectToAction("Details", new {id = order.OrderId});
+        }
+         public async Task<ActionResult> Submit(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUser = await _userManager.FindByIdAsync(userId);
+
+            Order thisOrder = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).Include(order => order.Treats).ThenInclude(join => join.Treat).FirstOrDefault(orders => orders.OrderId == id);
+            if (thisOrder == null || thisOrder.IsSubmitted)
+            {
+                return RedirectToAction("Details", new {id = id});
+            }
+            return View(thisOrder);
+        }
+        [HttpPost, ActionName("Submit")]
+        public ActionResult SubmitConfirmed(int id)
+        {
+            Order thisOrder = _db.Orders.FirstOrDefault(orders => orders.OrderId == id);
+            if (thisOrder == null || thisOrder.IsSubmitted)
+            {
+                return RedirectToAction("Details", new {id = id});
+            }
+            thisOrder.IsSubmitted = true;
+            _db.Entry(thisOrder).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Details", new {id = id});
         }
     }
 }

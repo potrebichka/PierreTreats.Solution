@@ -1,0 +1,30 @@
+@model PierreSweets.Models.Order
+
+<h2>Are you sure you want to submit order @Model.OrderId?</h2>
+
+<h3>@Html.DisplayNameFor(model => model.Description): @Html.DisplayFor(model => model.Description)</h3>
+<h3>@Html.DisplayNameFor(model => model.Price): @Html.DisplayFor(model => model.Price)</h3>
+<hr/>
+@if(@Model.Treats.Count == 0)
+{
+  <h3>No treats in order.</h3>
+}
+else
+{
+  <h4>Treats in order:</h4>
+  <ul>
+    @foreach(var join in Model.Treats)
+    {
+      <li>@join.Treat.Name : @join.Treat.Price</li>
+    }
+  </ul>
+}
+<hr/>
+@using (Html.BeginForm())
+{
+    <input type="submit" value="Submit" class="btn btn-success"/>
+}
+
+<hr/>
+<h3>@Html.ActionLink("Back to order", "Details", new {id = Model.OrderId}, new { @class = "tab" } )</h3>
+<h3>@Html.ActionLink("Back to list of orders", "Index", null, null, new { @class = "tab" } )</h3>
