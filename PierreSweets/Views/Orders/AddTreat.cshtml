@@ -1,0 +1,22 @@
+@model PierreSweets.Models.Order
+
+<h1>Add a treat</h1>
+<hr/>
+<h3>Add a treat to order @Html.DisplayFor(model => model.OrderId)</h3>
+<hr/>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.OrderId)
+    @Html.HiddenFor(model => model.Description)
+    @Html.HiddenFor(model => model.Price)
+
+    <div class="form-group">
+        <h3>@Html.Label("Select treat")</h3>
+        @Html.DropDownList("TreatId", null, null, new { @class = "form-control" })
+    </div>
+    <input type="submit" value="Add" class="btn btn-success"/>
+}
+<hr/>
+<h3>@Html.ActionLink("Back to order", "Details", new {id = Model.OrderId}, new { @class = "tab" } )</h3>
+<h3>@Html.ActionLink("Back to list of orders", "Index", null, null, new { @class = "tab" } )</h3>

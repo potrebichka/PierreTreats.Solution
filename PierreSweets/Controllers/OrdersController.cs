@@ -114,5 +114,42 @@ namespace PierreSweets.Controllers
           _db.SaveChanges();
           return RedirectToAction("Index");
         }  
+        [HttpPost]
+        public ActionResult DeleteTreat(int joinId)
+        {
+            var joinEntry = _db.OrderTreat.FirstOrDefault(entry => entry.OrderTreatId == joinId);
+            _db.OrderTreat.Remove(joinEntry);
+            Order order = _db.Orders.FirstOrDefault(ord => ord.OrderId == joinEntry.OrderId);
+            order.Price -= _db.Treats.FirstOrDefault(treat => treat.TreatId == joinEntry.TreatId).Price;
+            _db.Entry(order).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Details", new {id = joinEntry.OrderId});
+        }
+        public async Task<ActionResult> AddTreat(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUser = await _userManager.FindByIdAsync(userId);
+
+            Order thisOrder = _db.Orders.Where(entry => entry.User.Id == currentUser.Id).FirstOrDefault(orders => orders.OrderId == id);
+            if (thisOrder == null)
+            {
+                return RedirectToAction("Details", new {id = id});
+            }
+
+            ViewBag.TreatId = new SelectList(_db.Treats, "TreatId", "Name");
+            return View(thisOrder);
+        }
+        [HttpPost]
+        public ActionResult AddTreat(Order order, int TreatId)
+        {
+            if (TreatId != 0)
+            {
+                _db.OrderTreat.Add(new OrderTreat() {TreatId = TreatId, OrderId = order.OrderId});
+            }
+            order.Price += _db.Treats.FirstOrDefault(treat => treat.TreatId == TreatId).Price;
+            _db.Entry(order).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Details", new {id = order.OrderId});
+        }
     }
 }

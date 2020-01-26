@@ -39,7 +39,7 @@ namespace PierreSweets.Controllers
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
       treat.User = currentUser;
-
+      
       _db.Treats.Add(treat);
 
       if (FlavorId != 0)
